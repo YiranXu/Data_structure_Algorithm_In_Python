@@ -73,11 +73,56 @@ class LinkedList:
         else:
             self.head=curr_1
         curr_1.next,curr_2.next=curr_1.next,curr_2.next
-if __name__ == "__main__":
-    llist = LinkedList()
-    llist.append("A")
-    llist.append("B")
-    llist.append("C")
 
-    llist.swap_nodes1('C','A')
-    print(llist.print_list())
+    def merge_sorted(self,l2):
+        """
+        merge two sorted linked list
+        """           
+        p=self.head
+        q=l2.head
+        prev=None
+        if not p:
+            return q
+        if not q:
+            return p
+        while p and q:
+            if p.data<=q.data:
+                if prev:
+                    prev.next=p
+                prev=p
+                p=p.next
+            else:
+                if prev:
+                    prev.next=q
+                prev=q
+                q=q.next
+        #one of the list has been finished
+        if not p:
+            prev.next=q
+        if not q:
+            prev.next=p
+        #new head            
+        if self.head.data>l2.head.data:
+            self.head=l2.head
+
+if __name__ == "__main__":
+    llist_1 = LinkedList()
+    llist_2 = LinkedList()
+
+    llist_1.append(2)
+    llist_1.append(5)
+    llist_1.append(7)
+    llist_1.append(9)
+    llist_1.append(10)
+
+    llist_2.append(1)
+    llist_2.append(3)
+    llist_2.append(4)
+    llist_2.append(6)
+    llist_2.append(8)
+
+    llist_1.merge_sorted(llist_2)
+    llist_1.print_list()
+
+    #llist.swap_nodes1('C','A')
+    #print(llist.print_list())
