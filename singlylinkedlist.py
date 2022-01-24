@@ -1,3 +1,6 @@
+from locale import currency
+
+
 class Node:
     def __init__(self,data):
         self.data=data
@@ -22,6 +25,14 @@ class LinkedList:
         while cur_node:
             print(cur_node.data)
             cur_node=cur_node.next
+    def len_recursive(self,node):
+        """
+        to get the length of the whole list, head needs to be passed as the parameter
+        """
+        #base case: empty list
+        if node is None:
+            return 0
+        return 1+self.len_recursive(node.next)
     def swap_nodes1(self,key1,key2):
         if key1==key2: return
         cur=self.head
@@ -105,24 +116,119 @@ class LinkedList:
         if self.head.data>l2.head.data:
             self.head=l2.head
 
+    def remove_duplicates(self):
+        unique=set()
+        cur=self.head
+        prev=None
+        while cur: 
+            if cur.data in unique:
+                prev.next=cur.next 
+                cur=None #set it to none for better garbage collection
+            else:
+                unique.add(cur.data) 
+                prev=cur 
+            cur=prev.next 
+    def print_nth_from_last(self,n):
+        total_length=self.len_recursive(self.head)
+        index=total_length+1-n
+        count=1
+        cur=self.head
+        while cur and count<index:
+            cur=cur.next
+            count+=1
+        if cur is None:
+            return
+        else:
+            print(cur.data)
+            return cur.data
+    def print_nth_from_last2(self, n):
+        total_len = self.len_recursive(self.head)
+  
+        cur = self.head 
+        while cur:
+            if total_len == n:
+                print(cur.data)
+                return cur.data
+            total_len -= 1
+            cur = cur.next
+        if cur is None:
+             return   
+    def print_nth_from_last3(self,n):
+        p=self.head
+        q=self.head
+        if n>0:
+            count=0
+            while q:
+                count+=1
+                if count==n:
+                    break
+                q=q.next
+            if not q:
+                print(str(n) + " is greater than the number of nodes in list.")
+                return
+            while p and q.next:
+                p=p.next
+                q=q.next
+            return p.data
+        else: 
+            return None 
+    def count_occurences_iterative(self,data):
+        cur=self.head
+        count=0
+        while cur:
+            if cur.data==data:
+                count+=1
+            cur=cur.next
+        return count   
+
+    def count_occurences_recursive(self,node,data):
+        if not node:
+            return 0
+        if node.data==data:
+            return 1+self.count_occurences_recursive(node.next,data)
+        else:
+            return self.count_occurences_recursive(node.next,data)
 if __name__ == "__main__":
-    llist_1 = LinkedList()
+    llist = LinkedList()
+    llist.append(1)
+    llist.append(2)
+    llist.append(3)
+    llist.append(4)
+    llist.append(5)
+    llist.append(6)
+
     llist_2 = LinkedList()
-
-    llist_1.append(2)
-    llist_1.append(5)
-    llist_1.append(7)
-    llist_1.append(9)
-    llist_1.append(10)
-
+    llist_2.append(1)
+    llist_2.append(2)
     llist_2.append(1)
     llist_2.append(3)
+    llist_2.append(1)
     llist_2.append(4)
-    llist_2.append(6)
-    llist_2.append(8)
+    llist_2.append(1)
+    print(llist_2.count_occurences_iterative(1))
+    print(llist_2.count_occurences_recursive(llist_2.head, 1))
+    #print(llist.print_nth_from_last3(2))
+    #print("Linked List After Removing Duplicates")
+    #llist.remove_duplicates()
+    #llist.print_list()
+    
+    #llist_1 = LinkedList()
+    #llist_2 = LinkedList()
 
-    llist_1.merge_sorted(llist_2)
-    llist_1.print_list()
+    #llist_1.append(2)
+    #llist_1.append(5)
+    #llist_1.append(7)
+    #llist_1.append(9)
+    #llist_1.append(10)
+
+    # llist_2.append(1)
+    # llist_2.append(3)
+    # llist_2.append(4)
+    # llist_2.append(6)
+    # llist_2.append(8)
+
+    # llist_1.merge_sorted(llist_2)
+    # llist_1.print_list()
 
     #llist.swap_nodes1('C','A')
     #print(llist.print_list())
