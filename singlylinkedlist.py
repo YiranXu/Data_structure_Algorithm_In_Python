@@ -1,6 +1,3 @@
-from locale import currency
-
-
 class Node:
     def __init__(self,data):
         self.data=data
@@ -188,25 +185,107 @@ class LinkedList:
             return 1+self.count_occurences_recursive(node.next,data)
         else:
             return self.count_occurences_recursive(node.next,data)
-if __name__ == "__main__":
-    llist = LinkedList()
-    llist.append(1)
-    llist.append(2)
-    llist.append(3)
-    llist.append(4)
-    llist.append(5)
-    llist.append(6)
+    def rotate(self,k):
+        if self.head and self.head.next:
+            
+            p=self.head
+            count=1
+            end=self.head
+        while end.next:
+            if count<k:
+                p=p.next
+                count+=1
+            end=end.next
+        end.next=self.head
+        self.head=p.next
+        p.next=None
+    
+    def is_palindrome1(self):
+        if self.head:
+            s=[]
+            p=self.head
+            length=self.len_recursive(self.head)
+            count=1
+            while p:
+                if count<=length//2:
+                    s.append(p)
+                elif length%2==1 and count==length//2+1:
+                    pass
+                else:
+                    last=s.pop()
+                    if last.data!=p.data:
+                        return False
+                p=p.next
+                count+=1
+        return True
+                
+    def is_palindrome2(self):
+        if self.head:
+            p = self.head 
+            q = self.head 
+            prev = []
+    
+            i = 0
+            while q:
+                prev.append(q)
+                q = q.next
+                i += 1
+            q = prev[i-1]
 
-    llist_2 = LinkedList()
-    llist_2.append(1)
-    llist_2.append(2)
-    llist_2.append(1)
-    llist_2.append(3)
-    llist_2.append(1)
-    llist_2.append(4)
-    llist_2.append(1)
-    print(llist_2.count_occurences_iterative(1))
-    print(llist_2.count_occurences_recursive(llist_2.head, 1))
+            count = 1
+
+            while count <= i//2 + 1:
+                if prev[-count].data != p.data:
+                    return False
+                p = p.next
+                count += 1
+            return True
+        else:
+            return True
+    def sum_two_lists(self, llist):
+        result=LinkedList()
+        carry=0
+        if not self.head:
+            return llist
+        if not llist.head:
+            return self
+        else:
+            p1=self.head
+            p2=llist.head
+            
+            while p1 or p2:
+                if not p1:
+                    rp=(p2.data+carry)%10
+                    carry=(p2.data+carry)//10
+                    result.append(rp)
+                    p2=p2.next
+                elif not p2:
+                    rp=(p1.data+carry)%10
+                    carry=(p1.data+carry)//10
+                    result.append(rp)
+                    p1=p1.next
+                else:
+                    rp=(p1.data+p2.data+carry)%10
+                    carry=(p1.data+p2.data+carry)//10
+                    result.append(rp)
+                    p1=p1.next
+                    p2=p2.next
+        return result
+    
+
+if __name__ == "__main__":
+    llist1 = LinkedList()
+    
+    llist1.append(2)
+    llist2 = LinkedList()
+    llist2.append(5)
+    #llist.append(6)
+
+    l3=llist1.sum_two_lists(llist2)
+    l3.print_list()
+    #llist.rotate(2)
+    #llist.print_list()
+    #print(llist.is_palindrome1())
     #print(llist.print_nth_from_last3(2))
     #print("Linked List After Removing Duplicates")
     #llist.remove_duplicates()
