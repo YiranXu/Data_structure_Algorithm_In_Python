@@ -54,7 +54,7 @@ class _DoublyLinkedBase:
             cur._prev,cur._next=cur._next,cur._prev
             cur=cur._prev
         self._trailer,self._header=self._header,self._trailer
-        
+  
     
 if __name__ == "__main__":
     dllist = _DoublyLinkedBase()
